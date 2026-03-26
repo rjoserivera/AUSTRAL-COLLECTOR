@@ -24,6 +24,66 @@
         .footer-area h3 { margin-top: 0; margin-bottom: 15px; }
         .footer-links a { color: var(--crimson-rust); text-decoration: none; margin: 0 15px; font-weight: bold; transition: color 0.3s; }
         .footer-links a:hover { color: var(--bronce-gold); }
+        
+        /* Detalles a los lados (Cadenas Doradas Místicas) */
+        body::before { content: ''; position: fixed; left: 0; width: 60px; top: 0; bottom: 0; background: url('data:image/svg+xml;utf8,<svg width="40" height="80" xmlns="http://www.w3.org/2000/svg"><path d="M20 0 L40 20 L20 40 L0 20 Z" fill="none" stroke="%23d59c3e" stroke-width="2" opacity="0.3"/><circle cx="20" cy="20" r="5" fill="%23852b10" opacity="0.4"/></svg>') repeat-y center; border-right: 2px solid rgba(213, 156, 62, 0.2); background-color: rgba(10,5,3, 0.8); z-index: -1; }
+        body::after { content: ''; position: fixed; right: 0; width: 60px; top: 0; bottom: 0; background: url('data:image/svg+xml;utf8,<svg width="40" height="80" xmlns="http://www.w3.org/2000/svg"><path d="M20 0 L40 20 L20 40 L0 20 Z" fill="none" stroke="%23d59c3e" stroke-width="2" opacity="0.3"/><circle cx="20" cy="20" r="5" fill="%23852b10" opacity="0.4"/></svg>') repeat-y center; border-left: 2px solid rgba(213, 156, 62, 0.2); background-color: rgba(10,5,3, 0.8); z-index: -1; }
+        
+        /* Carrusel Aliados */
+        .carousel-wrapper { width: 100%; overflow: hidden; white-space: nowrap; margin-top: 20px; padding: 20px 0; background: rgba(0,0,0,0.6); border-top: 2px solid var(--bronce-gold); border-bottom: 2px solid var(--bronce-gold); }
+        .carousel-track { display: inline-block; animation: scroll-left 15s linear infinite; }
+        .carousel-track:hover { animation-play-state: paused; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .partner { display: inline-block; padding: 15px 30px; margin: 0 15px; background: linear-gradient(135deg, #1f140e, #0a0604); border: 1px solid var(--crimson-rust); color: var(--bronce-gold); font-family: 'Cinzel', serif; font-weight: bold; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.8); cursor: pointer; transition: transform 0.2s; }
+        .partner:hover { transform: scale(1.05); color: #fff; border-color: var(--bronce-gold); }
+
+        /* Cartas Estilo Mitos y Leyendas */
+        .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-top: 40px; margin-bottom: 20px; }
+        .myl-card { background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%); border: 2px solid var(--bronce-gold); border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.8), inset 0 0 15px rgba(213, 156, 62, 0.1); overflow: hidden; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; height: 100%; }
+        .myl-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.9), 0 0 20px rgba(213, 156, 62, 0.4); }
+        .myl-card::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border: 1px solid rgba(213, 156, 62, 0.3); pointer-events: none; border-radius: 4px; z-index: 10; }
+        .card-header { padding: 15px; text-align: center; border-bottom: 2px solid var(--bronce-gold); background: url('data:image/svg+xml;utf8,<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="%23d59c3e" opacity="0.1"/></svg>'); flex-shrink: 0; }
+        .card-title { font-family: 'Cinzel', serif; color: var(--text-light); font-size: 18px; margin: 0 0 5px 0; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,1); }
+        .card-category { font-size: 11px; text-transform: uppercase; color: var(--bronce-gold); letter-spacing: 2px; }
+        .card-media { width: 100%; height: 320px; background-color: #000; border-bottom: 2px solid var(--bronce-gold); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; flex-shrink: 0; }
+        .card-media img, .card-media video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .myl-card:hover .card-media img, .myl-card:hover .card-media video { transform: scale(1.05); }
+        
+        /* Modal Lightbox */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: none; z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { display: flex; width: 90%; max-width: 1100px; height: 85vh; max-height: 800px; background: linear-gradient(135deg, #1f140e, #0a0604); border: 2px solid var(--bronce-gold); border-radius: 8px; box-shadow: 0 0 50px rgba(0,0,0,1), inset 0 0 20px rgba(213,156,62,0.15); position: relative; overflow: hidden; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 35px; color: var(--bronce-gold); background: none; border: none; cursor: pointer; transition: color 0.2s; z-index: 30; line-height: 1; }
+        .modal-close:hover { color: var(--crimson-rust); }
+        .modal-left { width: 60%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; border-right: 2px solid var(--bronce-gold); overflow: hidden; }
+        .modal-left img, .modal-left video { width: 100%; height: 100%; object-fit: contain; }
+        .modal-right { width: 40%; padding: 35px 25px 25px 25px; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+        .modal-comments { flex-grow: 1; overflow-y: auto; padding-right: 10px; margin-bottom: 20px; display: flex; flex-direction: column; }
+        .modal-comments::-webkit-scrollbar { width: 5px; }
+        .modal-comments::-webkit-scrollbar-thumb { background: var(--crimson-rust); border-radius: 3px; }
+        .comment { display: flex; gap: 12px; margin-bottom: 18px; }
+        .comment-avatar { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--bronce-gold); flex-shrink: 0; }
+        .comment-body { background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px; border: 1px solid rgba(213,156,62,0.2); font-size: 13.5px; color: #d0d0d0; line-height: 1.4; width: 100%; text-align: left; }
+        .comment-body strong { color: var(--bronce-gold); display: block; margin-bottom: 5px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .comment-body p { margin: 0; }
+        .comment-input-box { display: flex; gap: 10px; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(213,156,62,0.2); }
+        .comment-input-box input { flex-grow: 1; padding: 10px 15px; background: rgba(0,0,0,0.7); border: 1px solid var(--bronce-gold); color: #fff; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
+        .comment-input-box input:focus { border-color: var(--crimson-rust); box-shadow: 0 0 8px rgba(133,43,16,0.5); }
+        
+        @media (max-width: 900px) {
+            .modal-content { flex-direction: column; align-items: stretch; overflow-y: auto; height: 95vh; }
+            .modal-left { width: 100%; height: 400px; flex-shrink: 0; border-right: none; border-bottom: 2px solid var(--bronce-gold); }
+            .modal-right { width: 100%; height: auto; overflow-y: visible; padding: 20px; }
+            .modal-comments { max-height: none; overflow-y: visible; }
+        }
+
+        .card-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; position: relative; z-index: 20; text-align: left; }
+        .card-desc { font-size: 13.5px; line-height: 1.5; color: #c0c0c0; margin: 0 0 15px 0; font-style: italic; border-left: 2px solid var(--crimson-rust); padding-left: 10px; flex-grow: 1; }
+        .card-hashtags { font-size: 12px; color: var(--bronce-gold); font-weight: 600; cursor: pointer; margin-top: auto; }
+        .card-hashtags span:hover { text-decoration: underline; color: #fff; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(213, 156, 62, 0.2); position: relative; z-index: 20; }
+        .interactive { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-light); cursor: pointer; transition: color 0.2s; font-weight: bold; }
+        .interactive:hover { color: var(--bronce-gold); }
+        .interactive .icon { color: var(--crimson-rust); font-size: 18px; }
     </style>
 </head>
 <body>
@@ -52,8 +112,283 @@
     </nav>
     
     <div class="container">
-        <h1>INICIO</h1>
-        <p>Bienvenido al refugio de las reliquias vintage. Modifica el archivo para crear el landing público.</p>
+        <!-- Carrusel de Eventos Hero -->
+        <h3 class="brand-font" style="text-align:center; padding-top:20px; font-size:20px; margin-bottom:5px; color:var(--bronce-gold);">Ecos de la Comunidad</h3>
+        <p style="text-align:center; color:#a0a0a0; font-size:14px; margin-bottom:20px;">Próximos Encuentros, Torneos y Cazas de Reliquias</p>
+        
+        <div class="hero-slider" style="position:relative; width:100%; max-width:1200px; margin: 0 auto 50px auto; height:350px; overflow:hidden; border-radius:8px; border:2px solid var(--bronce-gold); box-shadow:0 15px 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(213,156,62,0.3);">
+            <div class="slider-track" id="hero-slider-track" style="display:flex; width:100%; height:100%; transition: transform 0.5s ease-in-out;">
+                <!-- Evento 1 -->
+                <div class="slide" style="min-width:100%; height:100%; position:relative;">
+                    <video src="src/assets/video/initial d ae86.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; filter:brightness(0.6);"></video>
+                    <div style="position:absolute; bottom:0; left:0; right:0; padding:40px 30px 30px 30px; background:linear-gradient(to top, rgba(10,5,3,1), transparent);">
+                        <span style="display:inline-block; padding:4px 10px; background:var(--crimson-rust); color:white; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-radius:3px; margin-bottom:10px;">Valparaíso - 15 de Mayo</span>
+                        <h2 style="color:var(--text-light); font-family:'Cinzel', serif; font-size:26px; text-shadow:0 2px 4px rgba(0,0,0,1); margin:0 0 10px 0;">Expo Reliquias Die-Cast y Motor 2026</h2>
+                        <p style="color:#d0d0d0; font-size:14px; margin:0; text-shadow:0 1px 2px rgba(0,0,0,1);">El mayor encuentro de gremios coleccionistas del puerto. Habrá intercambio de figuras, dioramas a escala y competencias oficiales.</p>
+                    </div>
+                </div>
+                <!-- Evento 2 -->
+                <div class="slide" style="min-width:100%; height:100%; position:relative;">
+                    <video src="src/assets/video/bocchi.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; filter:brightness(0.6);"></video>
+                    <div style="position:absolute; bottom:0; left:0; right:0; padding:40px 30px 30px 30px; background:linear-gradient(to top, rgba(10,5,3,1), transparent);">
+                        <span style="display:inline-block; padding:4px 10px; background:var(--crimson-rust); color:white; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-radius:3px; margin-bottom:10px;">Santiago - 22 de Mayo</span>
+                        <h2 style="color:var(--text-light); font-family:'Cinzel', serif; font-size:26px; text-shadow:0 2px 4px rgba(0,0,0,1); margin:0 0 10px 0;">Gran Torneo de Figuras y Resina: Anime Fest</h2>
+                        <p style="color:#d0d0d0; font-size:14px; margin:0; text-shadow:0 1px 2px rgba(0,0,0,1);">Trae tus nendoroids y figuras raras a la exhibición. Prepara tus cámaras y compite por llevarte la mítica armadura de oro grabada.</p>
+                    </div>
+                </div>
+                <!-- Evento 3 -->
+                <div class="slide" style="min-width:100%; height:100%; position:relative;">
+                    <img src="src/assets/img/mikuv1.png" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.6);" alt="Feria Vintage">
+                    <div style="position:absolute; bottom:0; left:0; right:0; padding:40px 30px 30px 30px; background:linear-gradient(to top, rgba(10,5,3,1), transparent);">
+                        <span style="display:inline-block; padding:4px 10px; background:var(--crimson-rust); color:white; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; border-radius:3px; margin-bottom:10px;">Concepción - 02 de Junio</span>
+                        <h2 style="color:var(--text-light); font-family:'Cinzel', serif; font-size:26px; text-shadow:0 2px 4px rgba(0,0,0,1); margin:0 0 10px 0;">Feria Arcana: Antigüedades y Retro-Tech</h2>
+                        <p style="color:#d0d0d0; font-size:14px; margin:0; text-shadow:0 1px 2px rgba(0,0,0,1);">Encuentra Tamagotchis en sus cajas selladas, consolas de 8 bits y juguetes de hojalata del siglo pasado. Los mercaderes abren sus baúles ocultos al público.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles del Slider -->
+            <button id="hero-prev" style="position:absolute; top:50%; left:15px; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:var(--bronce-gold); border:1px solid var(--bronce-gold); width:40px; height:40px; border-radius:50%; font-size:18px; cursor:pointer; z-index:10; transition:all 0.3s;" onmouseover="this.style.background='var(--crimson-rust)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(0,0,0,0.6)'; this.style.color='var(--bronce-gold)'">❮</button>
+            <button id="hero-next" style="position:absolute; top:50%; right:15px; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:var(--bronce-gold); border:1px solid var(--bronce-gold); width:40px; height:40px; border-radius:50%; font-size:18px; cursor:pointer; z-index:10; transition:all 0.3s;" onmouseover="this.style.background='var(--crimson-rust)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(0,0,0,0.6)'; this.style.color='var(--bronce-gold)'">❯</button>
+            
+            <div id="hero-dots" style="position:absolute; bottom:15px; right:30px; display:flex; gap:8px; z-index:10;">
+                <div class="hero-dot" style="width:10px; height:10px; border-radius:50%; background:var(--bronce-gold); cursor:pointer; box-shadow:0 0 5px #000;"></div>
+                <div class="hero-dot" style="width:10px; height:10px; border-radius:50%; background:rgba(213,156,62,0.4); cursor:pointer; box-shadow:0 0 5px #000;"></div>
+                <div class="hero-dot" style="width:10px; height:10px; border-radius:50%; background:rgba(213,156,62,0.4); cursor:pointer; box-shadow:0 0 5px #000;"></div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-size: 2.8rem; margin-bottom: 10px;">EL BAZAR DE LEYENDAS</h1>
+            <p style="color: #a0a0a0; max-width: 600px; margin: 0 auto; line-height: 1.6;">Explora los tesoros descubiertos por los Maestres del gremio. Obras invaluables de coleccionismo forjadas en el tiempo.</p>
+        </div>
+
+        <!-- Barra de Búsqueda y Añadir Publicación -->
+        <div class="controls-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 10px; gap: 20px; flex-wrap: wrap;">
+            <div class="search-box" style="flex-grow: 1; max-width: 500px; position: relative;">
+                <input type="text" id="search-input" placeholder="Buscar reliquias mágicas, personajes o hashtags..." style="width: 100%; padding: 12px 45px 12px 20px; border-radius: 25px; background: rgba(0,0,0,0.7); border: 2px solid var(--bronce-gold); color: #fff; font-family: 'Inter', sans-serif; outline: none; box-shadow: 0 0 15px rgba(0,0,0,0.8);">
+                <span style="position: absolute; right: 15px; top: 12px; font-size: 18px; pointer-events: none;">🔍</span>
+            </div>
+            <button id="btn-add-post" class="nav-btn-primary" style="display: none; padding: 12px 25px; font-size: 14px; text-transform: uppercase; font-weight: bold; border-radius: 4px; border: 1px solid var(--bronce-gold); cursor: pointer; white-space: nowrap;">
+                <span style="font-size: 18px; margin-right: 5px; vertical-align: middle;">+</span> <span style="vertical-align: middle;">Forjar Reliquia</span>
+            </button>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Carta 1: EVA-01 Video Local (Primero) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">EVA-01 Test Type</h2>
+                    <span class="card-category">Mecha Orgánico</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <video src="src/assets/video/EVA-02 3D Render - Luma.mp4" autoplay loop muted playsinline></video>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"El demonio púrpura despierta." Render digital en 3D del legendario mecha pilotado por Shinji Ikari.</p>
+                    <p class="card-hashtags"><span>#Evangelion</span> <span>#Eva01</span> <span>#ShinjiIkari</span> <span>#MechaFigure</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 1.2k</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 210</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+
+            <!-- Carta 2: Bocchi Video Local (Segundo) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">Hitori "Bocchi" Gotoh</h2>
+                    <span class="card-category">Nendoroid Animado</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <video src="src/assets/video/bocchi.mp4" autoplay loop muted playsinline></video>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"La heroína de la guitarra que sufre ansiedad." Figura oficial súper tierna con expresiones intercambiables pánicas.</p>
+                    <p class="card-hashtags"><span>#BocchiTheRock</span> <span>#AnimeFigure</span> <span>#KessokuBand</span> <span>#Guitar</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 3.4k</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 800</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+
+            <!-- Carta 3: Initial D AE86 Video Local (Tercero) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">Toyota AE86 Trueno</h2>
+                    <span class="card-category">Vehículo Die-Cast 1/24</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <video src="src/assets/video/initial d ae86.mp4" autoplay loop muted playsinline></video>
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"El fantasma de Akina Derrapa de Nuevo." Réplica oficial en metal con luces funcionales y motor detallado del 'Hachi-Roku'.</p>
+                    <p class="card-hashtags"><span>#InitialD</span> <span>#AE86</span> <span>#DieCast</span> <span>#JDM</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 2.1k</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 430</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+
+            <!-- Carta 4: Miku Local (Cuarto) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">Miku Hatsune Vocaloid</h2>
+                    <span class="card-category">Figura Escala 1/8</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <img src="src/assets/img/miku.png" alt="Miku Hatsune">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"Su voz resuena a través de las eras digitales." Estado impecable (Mint), conservada en su caja original de cristal puro.</p>
+                    <p class="card-hashtags"><span>#Vocaloid</span> <span>#AnimeFigure</span> <span>#HatsuneMiku</span> <span>#Reliquia</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 342</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 56</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+
+            <!-- Carta 5: Miku V1 Local (Quinto) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">Miku V1 (Cielo Zero)</h2>
+                    <span class="card-category">Prototipo Sagrado</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <img src="src/assets/img/mikuv1.png" alt="Miku V1">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"El primer eco antes de la melodía." Edición limitada adquirida en la era antigua del internet. Auténtica pieza de museo.</p>
+                    <p class="card-hashtags"><span>#MikuV1</span> <span>#RareToy</span> <span>#VocaloidZero</span> <span>#PiezaUnica</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 890</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 124</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+
+            <!-- Carta 6: Goku Toy External (Sexto) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">Goku Super Saiyan</h2>
+                    <span class="card-category">Articulada SH Figuarts</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <img src="https://loremflickr.com/600/600/goku,toy/all" alt="Figura Goku">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"El guerrero legendario que despertó por la ira." Nivel de articulación superior para recrear el mítico Kamehameha.</p>
+                    <p class="card-hashtags"><span>#DragonBallZ</span> <span>#Goku</span> <span>#SHFiguarts</span> <span>#AnimeToy</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 1.5k</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 312</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+
+            <!-- Carta 7: Saint Seiya Figure External (Séptimo) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">Pegaso Seiya Myth Cloth</h2>
+                    <span class="card-category">Armadura Die-Cast 1/10</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <img src="https://loremflickr.com/600/600/saintseiya,toy/all" alt="Figura Saint Seiya">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"Arde, mi cosmos." Clásica joya de la colección Myth Cloth con armadura desmontable de metal que brilla con poder.</p>
+                    <p class="card-hashtags"><span>#CaballerosDelZodiaco</span> <span>#SaintSeiya</span> <span>#MythCloth</span> <span>#RetroAnime</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 980</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 142</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+
+            <!-- Carta 8: Gundam External (Octavo) -->
+            <div class="myl-card">
+                <div class="card-header">
+                    <h2 class="card-title">Gundam RX-78-2 Master Grade</h2>
+                    <span class="card-category">Gunpla Armado</span>
+                </div>
+                <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                    <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">Maestre Orion</span>
+                </div>
+                <div class="card-media">
+                    <img src="https://loremflickr.com/600/600/gundam,gunpla/all" alt="Gundam">
+                </div>
+                <div class="card-body">
+                    <p class="card-desc">"El antepasado de lata pura." Maqueta completamente ensamblada, pintada con aerógrafo y panel lining perfecto.</p>
+                    <p class="card-hashtags"><span>#Gunpla</span> <span>#Gundam</span> <span>#MechaModel</span> <span>#Bandai</span></p>
+                </div>
+                <div class="card-footer">
+                    <div class="interactive" onclick="alert('¡Has dado Me Gusta!')"><span class="icon">♥</span> 890</div>
+                    <div class="interactive" onclick="alert('Abriendo comentarios...')"><span class="icon">💬</span> 144</div>
+                    <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrusel de Tiendas Aliadas -->
+    <div style="text-align: center; margin-top: 50px;">
+        <h3 class="brand-font" style="margin-bottom: 10px;">Gremio Mercante Aliado</h3>
+        <p style="color: #a0a0a0; font-size: 14px; margin-bottom: 0;">Las tiendas y ferias oficiales donde equiparte de reliquias.</p>
+    </div>
+    <div class="carousel-wrapper">
+        <div class="carousel-track">
+            <!-- Bloque 1 -->
+            <div class="partner" onclick="window.open('https://mirax.cl', '_blank')">MIRAX HOBBIES</div>
+            <div class="partner" onclick="window.open('https://zmart.cl', '_blank')">ZMART TOYS</div>
+            <div class="partner" onclick="window.open('https://geekz.cl', '_blank')">GEEKZ STORE</div>
+            <div class="partner" onclick="window.open('https://sargentotoys.cl', '_blank')">SARGENTO TOYS</div>
+            <div class="partner" onclick="window.open('https://krakentoys.cl', '_blank')">KRAKEN TOYS</div>
+            <!-- Bloque 2 repetido para scroll infinito suave -->
+            <div class="partner" onclick="window.open('https://mirax.cl', '_blank')">MIRAX HOBBIES</div>
+            <div class="partner" onclick="window.open('https://zmart.cl', '_blank')">ZMART TOYS</div>
+            <div class="partner" onclick="window.open('https://geekz.cl', '_blank')">GEEKZ STORE</div>
+            <div class="partner" onclick="window.open('https://sargentotoys.cl', '_blank')">SARGENTO TOYS</div>
+            <div class="partner" onclick="window.open('https://krakentoys.cl', '_blank')">KRAKEN TOYS</div>
+        </div>
     </div>
 
     <!-- Footer de Contacto -->
@@ -71,6 +406,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             const loggedUserStr = sessionStorage.getItem('loggedUser');
             if (loggedUserStr) {
+                const navLinks = document.querySelector('.nav-links');
+                const btnLogin = document.getElementById('btn-login');
+                const userMenu = document.getElementById('user-menu');
+                const userNameDisplay = document.getElementById('user-name-display');
+                
+                // Mostrar botón exclusivo de Añadir Publicación
+                const btnAddPost = document.getElementById('btn-add-post');
+                if(btnAddPost) btnAddPost.style.display = 'block';
+                
                 const user = JSON.parse(loggedUserStr);
                 document.getElementById('btn-login').style.display = 'none';
                 document.getElementById('user-menu').style.display = 'block';
@@ -96,5 +440,349 @@
             }
         });
     </script>
+
+    <!-- Modal de Publicación Ampliada -->
+    <div id="post-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <div class="modal-left" id="modal-media-container">
+                <!-- Se inyecta la img/video mágicamente con JS -->
+            </div>
+            <div class="modal-right">
+                <!-- Info Autor -->
+                <div class="card-author" style="display:flex;align-items:center;gap:15px;margin-bottom:25px;padding-bottom:15px;border-bottom:1px solid rgba(213,156,62,0.2);">
+                    <img src="https://ui-avatars.com/api/?name=Maestre+Orion&background=852b10&color=fff&size=50" style="border-radius:50%; border:2px solid var(--bronce-gold);" alt="avatar">
+                    <div style="text-align:left;">
+                        <span style="color:var(--text-light);font-size:16px;font-weight:bold;display:block;">Maestre Orion</span>
+                        <span style="color:var(--bronce-gold);font-size:12px;letter-spacing:1px;text-transform:uppercase;">Gremio Coleccionista Mayor</span>
+                    </div>
+                </div>
+                
+                <div style="text-align:left;">
+                    <h2 id="modal-title" style="color:var(--bronce-gold); font-family:'Cinzel'; margin:0 0 15px 0; font-size:26px;">Título de Leyenda</h2>
+                    <div id="modal-desc" style="color:#e0e0e0; font-size:15px; margin-bottom:20px; border-left:3px solid var(--crimson-rust); padding-left:15px; font-style:italic; line-height:1.6;">Descripción antigua grabada en piedra.</div>
+                    <div id="modal-hashtags" style="color:var(--bronce-gold); font-size:14px; margin-bottom:25px; font-weight:bold; letter-spacing:1px;">#reliquias</div>
+                </div>
+
+                <!-- Iconos Interacción -->
+                <div style="display:flex; gap:30px; margin-bottom:25px; border-bottom:1px solid rgba(213,156,62,0.2); padding-bottom:20px;">
+                    <div class="interactive" style="font-size:18px;"><span class="icon" style="font-size:22px;">♥</span> <span id="modal-likes">0</span></div>
+                    <div class="interactive" style="font-size:18px;"><span class="icon" style="font-size:22px;">💬</span> <span id="modal-comments-count">0</span></div>
+                </div>
+
+                <div style="text-align:left;">
+                    <h4 style="color: var(--bronce-gold); margin-top: 0; margin-bottom: 20px; font-family:'Cinzel'; font-size:18px; letter-spacing:1px;">Registros y Ecos (Comentarios)</h4>
+                </div>
+                <div class="modal-comments">
+                    <!-- Comentarios Falsos Estáticos Estilo RPG -->
+                    <div class="comment">
+                        <img src="https://ui-avatars.com/api/?name=Forjador+Ignis&background=1f140e&color=d59c3e" class="comment-avatar">
+                        <div class="comment-body">
+                            <strong>Forjador Ignis</strong>
+                            <p>¡Por los dioses antiguos! Una pieza en estado prístino. ¿La base original incluye los sellos de origen incrustados?</p>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <img src="https://ui-avatars.com/api/?name=Archivista+Lyra&background=0a0604&color=fff" class="comment-avatar">
+                        <div class="comment-body">
+                            <strong>Archivista Lyra</strong>
+                            <p>Llevo más de 5 eras cazando exactamente este artefacto en las tierras niponas. Felicidades por resguardar esta joya en tu bóveda.</p>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <img src="https://ui-avatars.com/api/?name=Cazador+Errante&background=852b10&color=fff" class="comment-avatar">
+                        <div class="comment-body">
+                            <strong>Cazador Errante</strong>
+                            <p>Dispongo de oro acuñado en la primera era y reliquias oscuras para realizar un trueque justo. Si aceptas audiciencias, envíame un cuervo mensajero mental.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comment-input-box">
+                    <input type="text" placeholder="Ofrece tu comentario al gremio..." id="fake-comment">
+                    <button class="nav-btn-primary" style="padding: 10px 20px; font-size: 14px; cursor: pointer; text-transform:uppercase; font-weight:bold;" onclick="alert('Tu eco ya forma parte de esta historia.')">Marcar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Lightbox Modal (Zoom y Lectura) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('post-modal');
+            const closeBtn = document.getElementById('modal-close-btn');
+            const mediaContainer = document.getElementById('modal-media-container');
+            const titleEl = document.getElementById('modal-title');
+            const descEl = document.getElementById('modal-desc');
+            const hashEl = document.getElementById('modal-hashtags');
+            const likesEl = document.getElementById('modal-likes');
+            const commentsEl = document.getElementById('modal-comments-count');
+
+            // Cierre seguro del modal
+            const closeModal = () => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // devolver scroll
+                mediaContainer.innerHTML = '';
+            };
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Apertura mágica al hacer click en imagenes
+            document.querySelectorAll('.myl-card').forEach(card => {
+                const mediaBox = card.querySelector('.card-media');
+                mediaBox.style.cursor = 'zoom-in'; // Indica que se puede ampliar
+                
+                mediaBox.addEventListener('click', () => {
+                    const mediaTag = mediaBox.children[0];
+                    
+                    // Extraer data directo de la tarjeta que el user pintó
+                    titleEl.innerText = card.querySelector('.card-title').innerText;
+                    descEl.innerText = card.querySelector('.card-desc').innerText;
+                    hashEl.innerHTML = card.querySelector('.card-hashtags').innerHTML;
+                    
+                    const interactives = card.querySelectorAll('.interactive');
+                    likesEl.innerText = interactives[0].innerText.replace('♥', '').trim();
+                    commentsEl.innerText = interactives[1].innerText.replace('💬', '').trim();
+
+                    // Clonar el recurso exacto y prepararlo para mostrar entero y sin cortes (contain)
+                    const clone = mediaTag.cloneNode(true);
+                    if(clone.tagName === 'VIDEO'){
+                        clone.controls = true;
+                    } 
+                    clone.style.objectFit = 'contain'; 
+                    clone.style.width = '100%';
+                    clone.style.height = '100%';
+                    
+                    mediaContainer.innerHTML = ''; // Por si acaso
+                    mediaContainer.appendChild(clone);
+
+                    // Aparecer
+                    document.body.style.overflow = 'hidden'; // quitar scroll body
+                    modal.style.display = 'flex';
+                });
+            });
+
+            // ==============================
+            // FUNCIONALIDAD DEL BUSCADOR
+            // ==============================
+            const searchInput = document.getElementById('search-input');
+            if(searchInput){
+                searchInput.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase();
+                    document.querySelectorAll('.myl-card').forEach(card => {
+                        const textContent = card.innerText.toLowerCase();
+                        if(textContent.includes(term)){
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // ==============================
+            // FUNCIONALIDAD DE AÑADIR PUBLICACIÓN
+            // ==============================
+            const addPostBtn = document.getElementById('btn-add-post');
+            const addPostModal = document.getElementById('add-post-modal');
+            const closeAddModal = document.getElementById('close-add-modal');
+            const addPostForm = document.getElementById('add-post-form');
+            const grid = document.querySelector('.cards-grid');
+
+            if (addPostBtn && addPostModal) {
+                // Abrir modal de forjar
+                addPostBtn.addEventListener('click', () => {
+                    addPostModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+                
+                // Cerrar modal
+                closeAddModal.addEventListener('click', () => {
+                    addPostModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+
+                // Cierre modal por contorno click exterior
+                addPostModal.addEventListener('click', (e) => {
+                    if (e.target === addPostModal) {
+                        addPostModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+
+                // Añadir Tarjeta (Con Archivo Local)
+                addPostForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const title = document.getElementById('post-title').value;
+                    const cat = document.getElementById('post-category').value;
+                    const mediaInput = document.getElementById('post-media');
+                    const desc = document.getElementById('post-desc').value;
+                    const tagsStr = document.getElementById('post-tags').value;
+                    
+                    const file = mediaInput.files[0];
+                    if(!file) {
+                        alert("Has olvidado invocar el Orbe Visual (Selecciona una imagen o video).");
+                        return;
+                    }
+
+                    const formattedTags = tagsStr.split(' ').map(t => `<span style="margin-right:4px;">${t.startsWith('#') ? t : '#'+t}</span>`).join('');
+                    const userSessionStr = sessionStorage.getItem('loggedUser');
+                    const userName = userSessionStr ? JSON.parse(userSessionStr).nombre : "Maestre Errante";
+                    
+                    // Leer el archivo local
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const base64Media = event.target.result;
+                        const isVideo = file.type.startsWith('video/');
+                        const mediaHTML = isVideo ? `<video src="${base64Media}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${base64Media}" alt="${title}" style="width:100%;height:100%;object-fit:cover;">`;
+
+                        const newCard = document.createElement('div');
+                        newCard.className = 'myl-card';
+                        newCard.innerHTML = `
+                            <div class="card-header">
+                                <h2 class="card-title">${title}</h2>
+                                <span class="card-category">${cat}</span>
+                            </div>
+                            <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                                <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">${userName}</span>
+                            </div>
+                            <div class="card-media" style="cursor: zoom-in; width: 100%; height: 320px; border-bottom: 2px solid var(--bronce-gold); background: #000; overflow: hidden; flex-shrink: 0; display:flex; justify-content:center; align-items:center;">
+                                ${mediaHTML}
+                            </div>
+                            <div class="card-body" style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1; text-align: left; position:relative; z-index:20;">
+                                <p class="card-desc" style="font-size: 13.5px; color: #c0c0c0; border-left: 2px solid var(--crimson-rust); padding-left: 10px; flex-grow: 1; font-style: italic; margin-bottom: 15px; line-height:1.5;">"${desc}"</p>
+                                <p class="card-hashtags" style="font-size: 12px; color: var(--bronce-gold); font-weight: 600; margin-top: auto;">${formattedTags}</p>
+                            </div>
+                            <div class="card-footer" style="padding: 15px 20px; border-top: 1px solid rgba(213,156,62,0.2); background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items:center;">
+                                <div class="interactive" onclick="alert('¡Has dado Me Gusta!')" style="font-weight:bold; color:var(--text-light); font-size:14px; display:flex; gap:6px; align-items:center; cursor:pointer;"><span class="icon" style="color:var(--crimson-rust); font-size:18px;">♥</span> 0</div>
+                                <div class="interactive" onclick="alert('Abriendo comentarios...')" style="font-weight:bold; color:var(--text-light); font-size:14px; display:flex; gap:6px; align-items:center; cursor:pointer;"><span class="icon" style="color:var(--crimson-rust); font-size:18px;">💬</span> 0</div>
+                                <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                            </div>
+                        `;
+
+                        // Asignar el comportamiento del Lightbox a la tarjeta recién creada
+                        const mediaBox = newCard.querySelector('.card-media');
+                        mediaBox.addEventListener('click', () => {
+                            document.getElementById('modal-title').innerText = title;
+                            document.getElementById('modal-desc').innerText = desc;
+                            document.getElementById('modal-hashtags').innerHTML = formattedTags;
+                            document.getElementById('modal-likes').innerText = '0';
+                            document.getElementById('modal-comments-count').innerText = '0';
+                            
+                            const mediaContainer = document.getElementById('modal-media-container');
+                            const clone = mediaBox.children[0].cloneNode(true);
+                            if(clone.tagName === 'VIDEO') clone.controls = true;
+                            clone.style.objectFit = 'contain';
+                            clone.style.width = '100%';
+                            clone.style.height = '100%';
+                            mediaContainer.innerHTML = '';
+                            mediaContainer.appendChild(clone);
+                            
+                            document.body.style.overflow = 'hidden';
+                            document.getElementById('post-modal').style.display = 'flex';
+                        });
+
+                        // Inyectarla de primera en el grid visual
+                        grid.insertBefore(newCard, grid.firstChild);
+                        
+                        // Cerrar y limpiar
+                        addPostModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        addPostForm.reset();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // ==============================
+            // FUNCIONALIDAD DEL EVENT CAROUSEL (HERO)
+            // ==============================
+            const heroTrack = document.getElementById('hero-slider-track');
+            const heroPrev = document.getElementById('hero-prev');
+            const heroNext = document.getElementById('hero-next');
+            const heroDots = document.querySelectorAll('.hero-dot');
+            let currentSlide = 0;
+            const totalSlides = 3;
+            let slideInterval;
+
+            if(heroTrack){
+                const updateSlider = () => {
+                    heroTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+                    heroDots.forEach((dot, index) => {
+                        dot.style.background = index === currentSlide ? 'var(--bronce-gold)' : 'rgba(213,156,62,0.4)';
+                    });
+                };
+
+                const nextSlide = () => {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    updateSlider();
+                };
+
+                const prevSlide = () => {
+                    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                    updateSlider();
+                };
+
+                const resetInterval = () => {
+                    clearInterval(slideInterval);
+                    slideInterval = setInterval(nextSlide, 6000);
+                };
+
+                heroNext.addEventListener('click', () => { nextSlide(); resetInterval(); });
+                heroPrev.addEventListener('click', () => { prevSlide(); resetInterval(); });
+                heroDots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        currentSlide = index;
+                        updateSlider();
+                        resetInterval();
+                    });
+                });
+
+                slideInterval = setInterval(nextSlide, 6000);
+            }
+        });
+    </script>
+
+    <!-- Modal para Añadir Publicación Falsa (Prototipo) -->
+    <div id="add-post-modal" class="modal-overlay" style="display: none; z-index: 2000;">
+        <div class="modal-content" style="max-width: 600px; height: auto; padding: 30px; overflow-y: visible; background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%);">
+            <button class="modal-close" id="close-add-modal">&times;</button>
+            <h2 style="color: var(--bronce-gold); font-family: 'Cinzel', serif; margin-top: 0; text-align: center; border-bottom: 2px solid rgba(213,156,62,0.3); padding-bottom: 15px;">Forjar Nueva Reliquia</h2>
+            <p style="text-align:center; color:#c0c0c0; font-size:14px; margin-bottom: 20px;">Como miembro oficial, tu palabra queda sellada en el Gremio.</p>
+            
+            <form id="add-post-form" style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <label style="color:var(--text-light); font-size:13px; font-weight:bold;">Nombre del Artefacto</label>
+                    <input type="text" id="post-title" required placeholder="Ej. Godzilla S.H. MonsterArts" style="padding: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(213,156,62,0.5); color: #fff; border-radius: 4px; font-family:'Inter'; outline:none;">
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <label style="color:var(--text-light); font-size:13px; font-weight:bold;">Clasificación (Categoría)</label>
+                    <input type="text" id="post-category" required placeholder="Ej. Bestia Colosal Escala 1/144" style="padding: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(213,156,62,0.5); color: #fff; border-radius: 4px; font-family:'Inter'; outline:none;">
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <label style="color:var(--text-light); font-size:13px; font-weight:bold;">Orbe Visual (Sube una Foto o Video desde tu compu/teléfono)</label>
+                    <input type="file" id="post-media" accept="image/*,video/*" required style="padding: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(213,156,62,0.5); color: #fff; border-radius: 4px; font-family:'Inter'; outline:none; cursor:pointer;">
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <label style="color:var(--text-light); font-size:13px; font-weight:bold;">Inscripción del Legendario (Descripción)</label>
+                    <textarea id="post-desc" required placeholder="Narra la historia épica de tu pieza..." rows="3" style="padding: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(213,156,62,0.5); color: #fff; border-radius: 4px; resize: none; font-family:'Inter'; outline:none;"></textarea>
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                    <label style="color:var(--text-light); font-size:13px; font-weight:bold;">Marcas Místicas (Hashtags)</label>
+                    <input type="text" id="post-tags" required placeholder="Ej. #Godzilla #Kaiju #Coleccion #PiezaUnica" style="padding: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(213,156,62,0.5); color: #fff; border-radius: 4px; font-family:'Inter'; outline:none;">
+                </div>
+                
+                <button type="submit" class="nav-btn-primary" style="padding: 15px; font-size: 16px; margin-top: 15px; cursor: pointer; text-transform:uppercase; font-family:'Cinzel', serif; letter-spacing:2px; font-weight:bold; border: 2px solid var(--bronce-gold);">Registrar en el Bazar</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
