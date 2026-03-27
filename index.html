@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Austral Collector - Inicio</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Cropper.js CDN (Para Recortar Fotos Localmente) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
     <style>
         :root { --bg-base: #1a100b; --bg-gradient: radial-gradient(circle at top, #2b1b13 0%, #0f0906 100%); --bronce-gold: #d59c3e; --crimson-rust: #852b10; --text-light: #e0e0e0; }
         body { background: var(--bg-gradient); background-color: var(--bg-base); background-attachment: fixed; color: var(--text-light); font-family: 'Inter', sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
@@ -404,6 +409,71 @@
     <!-- Script General de Navegación UI -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Cargar publicaciones de LocalStorage
+            const loadSavedPosts = () => {
+                const grid = document.querySelector('.cards-grid');
+                if(!grid) return;
+                const savedStr = localStorage.getItem('austral_posts');
+                if(savedStr) {
+                    const savedPosts = JSON.parse(savedStr);
+                    savedPosts.forEach(post => {
+                        const mediaHTML = post.isVideo ? `<video src="${post.mediaBase64}" loop muted playsinline controls style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${post.mediaBase64}" alt="${post.title}" style="width:100%;height:100%;object-fit:cover;">`;
+                        
+                        const actualAuthor = (post.authorName && post.authorName !== "undefined") ? post.authorName : "Maestre Errante";
+
+                        const newCard = document.createElement('div');
+                        newCard.className = 'myl-card';
+                        newCard.innerHTML = `
+                            <div class="card-header">
+                                <h2 class="card-title">${post.title}</h2>
+                                <span class="card-category">${post.category}</span>
+                            </div>
+                            <div class="card-author" style="display:flex;align-items:center;gap:10px;padding:8px 15px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(213,156,62,0.3);">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(actualAuthor)}&background=852b10&color=fff&size=30" style="border-radius:50%; border:1px solid var(--bronce-gold);" alt="avatar">
+                                <span style="color:var(--text-light);font-size:12px;font-weight:600;font-family:'Inter',sans-serif;">${actualAuthor}</span>
+                            </div>
+                            <div class="card-media" style="cursor: zoom-in; width: 100%; height: 320px; border-bottom: 2px solid var(--bronce-gold); background: #000; overflow: hidden; flex-shrink: 0; display:flex; justify-content:center; align-items:center;">
+                                ${mediaHTML}
+                            </div>
+                            <div class="card-body" style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1; text-align: left; position:relative; z-index:20;">
+                                <p class="card-desc" style="font-size: 13.5px; color: #c0c0c0; border-left: 2px solid var(--crimson-rust); padding-left: 10px; flex-grow: 1; font-style: italic; margin-bottom: 15px; line-height:1.5;">"${post.desc}"</p>
+                                <p class="card-hashtags" style="font-size: 12px; color: var(--bronce-gold); font-weight: 600; margin-top: auto;">${post.tagsHtml}</p>
+                            </div>
+                            <div class="card-footer" style="padding: 15px 20px; border-top: 1px solid rgba(213,156,62,0.2); background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items:center;">
+                                <div class="interactive" onclick="alert('¡Has dado Me Gusta!')" style="font-weight:bold; color:var(--text-light); font-size:14px; display:flex; gap:6px; align-items:center; cursor:pointer;"><span class="icon" style="color:var(--crimson-rust); font-size:18px;">♥</span> 0</div>
+                                <div class="interactive" onclick="alert('Abriendo comentarios...')" style="font-weight:bold; color:var(--text-light); font-size:14px; display:flex; gap:6px; align-items:center; cursor:pointer;"><span class="icon" style="color:var(--crimson-rust); font-size:18px;">💬</span> 0</div>
+                                <button class="nav-btn-primary" style="padding: 6px 15px; font-size: 12px; cursor: pointer;">Ofrecer</button>
+                            </div>
+                        `;
+
+                        // Reasignar Lightbox
+                        const mediaBox = newCard.querySelector('.card-media');
+                        mediaBox.addEventListener('click', () => {
+                            document.getElementById('modal-title').innerText = post.title;
+                            document.getElementById('modal-desc').innerText = post.desc;
+                            document.getElementById('modal-hashtags').innerHTML = post.tagsHtml;
+                            document.getElementById('modal-likes').innerText = '0';
+                            document.getElementById('modal-comments-count').innerText = '0';
+                            
+                            const mediaContainer = document.getElementById('modal-media-container');
+                            const clone = mediaBox.children[0].cloneNode(true);
+                            if(clone.tagName === 'VIDEO') clone.controls = true;
+                            clone.style.objectFit = 'contain';
+                            clone.style.width = '100%';
+                            clone.style.height = '100%';
+                            mediaContainer.innerHTML = '';
+                            mediaContainer.appendChild(clone);
+                            
+                            document.body.style.overflow = 'hidden';
+                            document.getElementById('post-modal').style.display = 'flex';
+                        });
+
+                        grid.insertBefore(newCard, grid.firstChild);
+                    });
+                }
+            };
+            loadSavedPosts();
+
             const loggedUserStr = sessionStorage.getItem('loggedUser');
             if (loggedUserStr) {
                 const navLinks = document.querySelector('.nav-links');
@@ -598,47 +668,123 @@
                     document.body.style.overflow = 'hidden';
                 });
                 
-                // Cerrar modal
-                closeAddModal.addEventListener('click', () => {
+                let cropper = null;
+
+                // Reset preview on close
+                const closeAndReset = () => {
                     addPostModal.style.display = 'none';
                     document.body.style.overflow = 'auto';
-                });
+                    addPostForm.reset();
+                    document.getElementById('media-preview-container').style.display = 'none';
+                    if (cropper) {
+                        cropper.destroy();
+                        cropper = null;
+                    }
+                };
+
+                closeAddModal.addEventListener('click', closeAndReset);
 
                 // Cierre modal por contorno click exterior
                 addPostModal.addEventListener('click', (e) => {
-                    if (e.target === addPostModal) {
-                        addPostModal.style.display = 'none';
-                        document.body.style.overflow = 'auto';
-                    }
+                    if (e.target === addPostModal) closeAndReset();
                 });
 
-                // Añadir Tarjeta (Con Archivo Local)
+                // Previsualización en vivo y Recorte (Miniatura)
+                const mediaInput = document.getElementById('post-media');
+                const prevContainer = document.getElementById('media-preview-container');
+                const prevImg = document.getElementById('media-preview-img');
+                const prevVideo = document.getElementById('media-preview-video');
+                
+                mediaInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if(!file) {
+                        prevContainer.style.display = 'none';
+                        if(cropper) { cropper.destroy(); cropper = null; }
+                        return;
+                    }
+                    
+                    if(cropper) { cropper.destroy(); cropper = null; }
+
+                    const pR = new FileReader();
+                    pR.onload = function(event) {
+                        prevContainer.style.display = 'block';
+                        if(file.type.startsWith('video/')){
+                            prevImg.style.display = 'none';
+                            prevVideo.style.display = 'block';
+                            prevVideo.src = event.target.result;
+                        } else {
+                            prevVideo.style.display = 'none';
+                            prevImg.style.display = 'block';
+                            prevImg.src = event.target.result;
+                            
+                            // Initialize Cropper in next tick
+                            setTimeout(() => {
+                                cropper = new Cropper(prevImg, {
+                                    viewMode: 1, // Previene moverse fuera del recorte
+                                    dragMode: 'move', 
+                                    autoCropArea: 0.9,
+                                    restore: false,
+                                    guides: true,
+                                    center: true,
+                                    highlight: false,
+                                    cropBoxMovable: true,
+                                    cropBoxResizable: true,
+                                    toggleDragModeOnDblclick: false,
+                                });
+                            }, 50);
+                        }
+                    };
+                    pR.readAsDataURL(file);
+                });
+
+                // Añadir Tarjeta (Con Archivo Local Cortado)
                 addPostForm.addEventListener('submit', (e) => {
                     e.preventDefault();
                     
                     const title = document.getElementById('post-title').value;
                     const cat = document.getElementById('post-category').value;
-                    const mediaInput = document.getElementById('post-media');
                     const desc = document.getElementById('post-desc').value;
                     const tagsStr = document.getElementById('post-tags').value;
-                    
                     const file = mediaInput.files[0];
-                    if(!file) {
-                        alert("Has olvidado invocar el Orbe Visual (Selecciona una imagen o video).");
-                        return;
-                    }
+                    if(!file) return;
 
                     const formattedTags = tagsStr.split(' ').map(t => `<span style="margin-right:4px;">${t.startsWith('#') ? t : '#'+t}</span>`).join('');
                     const userSessionStr = sessionStorage.getItem('loggedUser');
-                    const userName = userSessionStr ? JSON.parse(userSessionStr).nombre : "Maestre Errante";
+                    let userName = "Maestre Errante";
+                    if(userSessionStr) {
+                        const u = JSON.parse(userSessionStr);
+                        userName = u.name || u.username || "Maestre Errante";
+                    }
                     
-                    // Leer el archivo local
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        const base64Media = event.target.result;
-                        const isVideo = file.type.startsWith('video/');
-                        const mediaHTML = isVideo ? `<video src="${base64Media}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${base64Media}" alt="${title}" style="width:100%;height:100%;object-fit:cover;">`;
+                    const isVideo = file.type.startsWith('video/');
 
+                    const injectCard = (base64MediaSrc) => {
+                        const mediaHTML = isVideo ? `<video src="${base64MediaSrc}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>` : `<img src="${base64MediaSrc}" alt="${title}" style="width:100%;height:100%;object-fit:cover;">`;
+
+                        // 1) Guardar en Persistencia
+                        const postObj = {
+                            title: title,
+                            category: cat,
+                            desc: desc,
+                            tagsHtml: formattedTags,
+                            authorName: userName,
+                            mediaBase64: base64MediaSrc,
+                            isVideo: isVideo
+                        };
+
+                        let savedPosts = [];
+                        const savedStr = localStorage.getItem('austral_posts');
+                        if (savedStr) savedPosts = JSON.parse(savedStr);
+                        savedPosts.push(postObj);
+
+                        try {
+                            localStorage.setItem('austral_posts', JSON.stringify(savedPosts));
+                        } catch (err) {
+                            console.error(err);
+                            alert("Grimorio Lleno: El cristal de memoria local superó su cuota (aprox 5MB). La publicación aparecerá, pero no se guardará tras recargar la página.");
+                        }
+
+                        // 2) Armar Tarjeta para el DOM
                         const newCard = document.createElement('div');
                         newCard.className = 'myl-card';
                         newCard.innerHTML = `
@@ -664,7 +810,7 @@
                             </div>
                         `;
 
-                        // Asignar el comportamiento del Lightbox a la tarjeta recién creada
+                        // Asignar el Lightbox
                         const mediaBox = newCard.querySelector('.card-media');
                         mediaBox.addEventListener('click', () => {
                             document.getElementById('modal-title').innerText = title;
@@ -686,15 +832,26 @@
                             document.getElementById('post-modal').style.display = 'flex';
                         });
 
-                        // Inyectarla de primera en el grid visual
                         grid.insertBefore(newCard, grid.firstChild);
-                        
-                        // Cerrar y limpiar
-                        addPostModal.style.display = 'none';
-                        document.body.style.overflow = 'auto';
-                        addPostForm.reset();
+                        closeAndReset();
                     };
-                    reader.readAsDataURL(file);
+
+                    if (!isVideo && cropper) {
+                        const croppedCanvas = cropper.getCroppedCanvas();
+                        if (croppedCanvas) {
+                            const finalBase64 = croppedCanvas.toDataURL('image/jpeg', 0.9);
+                            injectCard(finalBase64);
+                        } else {
+                            // Fallback
+                            injectCard(prevImg.src);
+                        }
+                    } else {
+                        const fallReader = new FileReader();
+                        fallReader.onload = function(evt){
+                            injectCard(evt.target.result);
+                        };
+                        fallReader.readAsDataURL(file);
+                    }
                 });
             }
 
@@ -749,7 +906,7 @@
 
     <!-- Modal para Añadir Publicación Falsa (Prototipo) -->
     <div id="add-post-modal" class="modal-overlay" style="display: none; z-index: 2000;">
-        <div class="modal-content" style="max-width: 600px; height: auto; padding: 30px; overflow-y: visible; background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%);">
+        <div class="modal-content" style="display: block !important; max-width: 600px; height: auto; padding: 30px; overflow-y: auto; background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%);">
             <button class="modal-close" id="close-add-modal">&times;</button>
             <h2 style="color: var(--bronce-gold); font-family: 'Cinzel', serif; margin-top: 0; text-align: center; border-bottom: 2px solid rgba(213,156,62,0.3); padding-bottom: 15px;">Forjar Nueva Reliquia</h2>
             <p style="text-align:center; color:#c0c0c0; font-size:14px; margin-bottom: 20px;">Como miembro oficial, tu palabra queda sellada en el Gremio.</p>
@@ -768,6 +925,12 @@
                 <div style="display:flex; flex-direction:column; gap:5px;">
                     <label style="color:var(--text-light); font-size:13px; font-weight:bold;">Orbe Visual (Sube una Foto o Video desde tu compu/teléfono)</label>
                     <input type="file" id="post-media" accept="image/*,video/*" required style="padding: 12px; background: rgba(0,0,0,0.8); border: 1px solid rgba(213,156,62,0.5); color: #fff; border-radius: 4px; font-family:'Inter'; outline:none; cursor:pointer;">
+                </div>
+
+                <!-- Contenedor de Previsualización Dinámica -->
+                <div id="media-preview-container" style="display:none; width:100%; height:200px; background:#000; border:1px solid var(--bronce-gold); border-radius:4px; overflow:hidden; justify-content:center; align-items:center; margin-bottom: 10px;">
+                    <img id="media-preview-img" style="display:none; width:100%; height:100%; object-fit:contain;" alt="Preview">
+                    <video id="media-preview-video" style="display:none; width:100%; height:100%; object-fit:contain;" controls></video>
                 </div>
                 
                 <div style="display:flex; flex-direction:column; gap:5px;">
