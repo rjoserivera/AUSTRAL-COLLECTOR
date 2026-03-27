@@ -1,0 +1,510 @@
+A
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Austral Collector - Custodia</title>
+    
+    <!-- Tailwind CSS (CDN para MVP local en XAMPP) -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style type="text/tailwindcss">
+        @theme {
+            --color-steampunk-dark: #1A0F0A;
+            --color-steampunk-gold: #C9A84C;
+            --color-steampunk-red: #C0392B;
+            --color-steampunk-cream: #E8D5B5;
+            --font-serif: 'Cinzel', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-steampunk-dark);
+            color: var(--color-steampunk-cream);
+            font-family: var(--font-sans);
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Subtle Noise Texture Overlay */
+        .noise-bg {
+            position: fixed;
+            inset: 0;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.5);
+            border-left: 1px solid rgba(201, 168, 76, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C9A84C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E8D5B5;
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-steampunk-dark relative">
+    
+    <!-- Global Noise Texture -->
+    <div class="noise-bg"></div>
+
+    <!-- Radial Glow Background -->
+    <div class="fixed inset-0 pointer-events-none z-0" style="background: radial-gradient(circle at 50% 50%, rgba(201, 168, 76, 0.08) 0%, transparent 70%);"></div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-6 right-6 z-50 flex items-center gap-3 bg-steampunk-dark border border-steampunk-gold shadow-[0_0_20px_rgba(201,168,76,0.3)] px-6 py-4 rounded-sm transition-all duration-500 transform translate-x-full opacity-0 pointer-events-none">
+        <i data-lucide="check-circle" class="text-steampunk-gold w-6 h-6 shrink-0"></i>
+        <span id="toast-msg" class="font-serif tracking-wide text-steampunk-gold text-sm md:text-base">Cambios guardados en la Bóveda</span>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="w-20 md:w-64 bg-black/80 border-r border-steampunk-gold/30 flex flex-col items-center md:items-start py-8 md:px-6 relative z-10 shrink-0">
+        
+        <!-- Brand -->
+        <div class="hidden md:block mb-12 w-full text-center">
+            <h2 class="font-serif text-steampunk-gold text-xl tracking-widest drop-shadow-[0_0_8px_#C9A84C]">AUSTRAL</h2>
+            <div class="text-[10px] text-steampunk-cream/60 tracking-[0.3em] uppercase mt-1">Collector</div>
+            <div class="w-full h-px bg-gradient-to-r from-transparent via-steampunk-gold to-transparent mt-4 opacity-50"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="flex flex-col gap-6 w-full">
+            <button id="btn-tab-profile" onclick="switchTab('profile')" class="flex items-center gap-4 text-steampunk-gold bg-steampunk-gold/10 w-full p-3 rounded-sm transition-all group relative border border-transparent">
+                <div id="ind-profile" class="absolute left-0 top-0 bottom-0 w-1 bg-steampunk-gold shadow-[0_0_10px_#C9A84C] opacity-100 transition-opacity"></div>
+                <i data-lucide="user" id="icon-profile" class="w-6 h-6 shrink-0 transition-transform drop-shadow-[0_0_8px_#C9A84C]"></i>
+                <span class="hidden md:block font-serif text-sm tracking-widest uppercase mt-1">Mi Perfil</span>
+            </button>
+
+            <button id="btn-tab-vault" onclick="switchTab('vault')" class="flex items-center gap-4 text-steampunk-cream/60 hover:text-steampunk-gold hover:bg-white/5 w-full p-3 rounded-sm transition-all group relative border border-transparent">
+                <div id="ind-vault" class="absolute left-0 top-0 bottom-0 w-1 bg-steampunk-gold shadow-[0_0_10px_#C9A84C] opacity-0 transition-opacity"></div>
+                <i data-lucide="archive" id="icon-vault" class="w-6 h-6 shrink-0 transition-transform group-hover:scale-110"></i>
+                <span class="hidden md:block font-serif text-sm tracking-widest uppercase mt-1">Mi Bóveda</span>
+            </button>
+        </div>
+
+        <div class="mt-auto w-full">
+            <button onclick="window.location.href='index.html'" class="flex items-center gap-4 text-steampunk-red hover:text-[#e44d3a] hover:bg-white/5 w-full p-3 rounded-sm transition-all group">
+                <i data-lucide="log-out" class="w-6 h-6 shrink-0 transition-transform group-hover:-translate-x-1 drop-shadow-[0_0_5px_#C0392B]"></i>
+                <span class="hidden md:block font-serif text-sm tracking-widest uppercase mt-1">Salir</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative z-10 w-full">
+        
+        <!-- Content Container with Scroll -->
+        <div class="flex-1 overflow-y-auto w-full p-4 md:p-10 relative">
+            
+            <!-- PROFILE TAB -->
+            <div id="view-profile" class="transition-all duration-500 transform opacity-100 translate-y-0 relative">
+                <h1 class="font-serif text-3xl md:text-5xl text-steampunk-gold mb-2 uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Custodia</h1>
+                <p class="text-steampunk-cream/60 mb-10 font-light tracking-wide">Configura tus parámetros en el engranaje central.</p>
+                
+                <div class="bg-[#1A0F0A]/80 border border-steampunk-gold/30 p-8 rounded-sm shadow-[0_10px_30px_rgba(0,0,0,0.8)_inset,0_0_20px_rgba(201,168,76,0.05)] backdrop-blur-sm relative overflow-hidden">
+                    <!-- Ornate corners -->
+                    <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-steampunk-gold opacity-50"></div>
+                    <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-steampunk-gold opacity-50"></div>
+                    <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-steampunk-gold opacity-50"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-steampunk-gold opacity-50"></div>
+
+                    <div class="flex flex-col md:flex-row gap-8 relative z-10 w-full">
+                        <!-- Left Column: Avatar & Identity Stats -->
+                        <div class="flex flex-col items-center gap-6 shrink-0 w-full md:w-64">
+                            <div onclick="simulateFileClick()" class="relative w-32 h-32 rounded-full border-4 border-steampunk-gold shadow-[0_0_20px_rgba(201,168,76,0.4)] cursor-pointer group overflow-hidden bg-black flex items-center justify-center transition-transform active:scale-95">
+                                <img id="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=gearheart&backgroundColor=C9A84C" alt="Avatar" class="w-full h-full object-cover opacity-90 group-hover:opacity-50 transition-opacity" />
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i data-lucide="camera" class="text-steampunk-gold w-8 h-8"></i>
+                                </div>
+                            </div>
+                            <input type="file" id="avatar-input" class="hidden" accept="image/*" onchange="changeAvatar()">
+                            
+                            <!-- Rango y XP -->
+                            <div class="w-full relative px-4 py-3 border border-steampunk-gold/50 bg-steampunk-gold/10 text-center shadow-[0_0_10px_rgba(201,168,76,0.2)] group cursor-help">
+                                <div class="text-steampunk-gold text-xs uppercase tracking-widest font-serif mb-2">Custodio de Bronce</div>
+                                <div class="flex justify-between text-[10px] text-steampunk-cream/60 mb-1 font-mono">
+                                    <span>XP</span>
+                                    <span>750 / 1000 para el Rango Plata</span>
+                                </div>
+                                <div class="w-full h-1 bg-black overflow-hidden relative">
+                                    <div class="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-steampunk-gold to-[#fff] shadow-[0_0_8px_#C9A84C]" style="width: 75%;"></div>
+                                </div>
+                                <!-- Tooltip -->
+                                <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black/90 border border-steampunk-gold/50 text-[10px] text-steampunk-cream px-2 py-1 w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
+                                    Subes de rango registrando hallazgos y recibiendo votos.
+                                </div>
+                            </div>
+
+                            <!-- Galería de Condecoraciones -->
+                            <div class="flex justify-center w-full mt-1">
+                                <div class="w-9 h-9 rounded-full border border-steampunk-gold flex items-center justify-center bg-steampunk-gold/20 text-steampunk-gold hover:scale-110 transition-all cursor-help hover:shadow-[0_0_15px_rgba(201,168,76,0.8)] group relative z-10 -mr-2 shadow-[0_0_10px_rgba(201,168,76,0.5)]">
+                                    <i data-lucide="compass" class="w-4 h-4 drop-shadow-[0_0_5px_#C9A84C]"></i>
+                                    <span class="absolute -top-8 bg-black/90 border border-steampunk-gold/50 text-[9px] px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none text-steampunk-gold">Pionero</span>
+                                </div>
+                                <div class="w-9 h-9 rounded-full border border-steampunk-gold flex items-center justify-center bg-steampunk-gold/20 text-steampunk-gold hover:scale-110 transition-all cursor-help hover:shadow-[0_0_15px_rgba(201,168,76,0.8)] group relative z-10 -mr-2 shadow-[0_0_10px_rgba(201,168,76,0.5)]">
+                                    <i data-lucide="gem" class="w-4 h-4 drop-shadow-[0_0_5px_#C9A84C]"></i>
+                                    <span class="absolute -top-8 bg-black/90 border border-steampunk-gold/50 text-[9px] px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none text-steampunk-gold">Gran Valuador</span>
+                                </div>
+                                <div class="w-9 h-9 rounded-full border border-gray-600 flex items-center justify-center bg-black/40 text-gray-500 hover:scale-110 transition-all cursor-help hover:border-steampunk-gold hover:text-steampunk-gold group relative -mr-2 z-0">
+                                    <i data-lucide="check-square" class="w-4 h-4"></i>
+                                    <span class="absolute -top-8 bg-black/90 border border-steampunk-gold/50 text-[9px] px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none text-steampunk-gold z-20">Completista</span>
+                                </div>
+                                <div class="w-9 h-9 rounded-full border border-gray-600 flex items-center justify-center bg-black/40 text-gray-500 hover:scale-110 transition-all cursor-help hover:border-steampunk-gold hover:text-steampunk-gold group relative -mr-2 z-0">
+                                    <i data-lucide="wrench" class="w-4 h-4"></i>
+                                    <span class="absolute -top-8 bg-black/90 border border-steampunk-gold/50 text-[9px] px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none text-steampunk-gold z-20">Restaurador</span>
+                                </div>
+                                <div class="w-9 h-9 rounded-full border border-gray-600 flex items-center justify-center bg-black/40 text-gray-500 hover:scale-110 transition-all cursor-help hover:border-steampunk-gold hover:text-steampunk-gold group relative z-0">
+                                    <i data-lucide="landmark" class="w-4 h-4"></i>
+                                    <span class="absolute -top-8 bg-black/90 border border-steampunk-gold/50 text-[9px] px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none text-steampunk-gold z-20">Mecenas</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Cuadrícula 2x2 Estadísticas -->
+                            <div class="grid grid-cols-2 gap-3 w-full mt-1">
+                                <div class="bg-black/60 border border-steampunk-gold/20 p-3 text-center rounded-sm hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(201,168,76,0.3)] hover:border-steampunk-gold/50 transition-all cursor-default">
+                                    <h5 class="text-steampunk-gold/60 text-[9px] uppercase font-serif tracking-widest mb-1">Reliquias</h5>
+                                    <p id="stat-relics" class="text-steampunk-cream font-bold text-lg font-mono drop-shadow-[0_0_2px_#E8D5B5]">0</p>
+                                </div>
+                                <div class="bg-black/60 border border-steampunk-gold/20 p-3 text-center rounded-sm hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(201,168,76,0.3)] hover:border-steampunk-gold/50 transition-all cursor-default">
+                                    <h5 class="text-steampunk-gold/60 text-[9px] uppercase font-serif tracking-widest mb-1">Valor</h5>
+                                    <p class="text-steampunk-cream font-bold text-lg font-mono drop-shadow-[0_0_2px_#E8D5B5]">250<span class="text-[10px] text-steampunk-gold font-sans ml-1">TC</span></p>
+                                </div>
+                                <div class="bg-black/60 border border-steampunk-gold/20 p-3 text-center rounded-sm hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(201,168,76,0.3)] hover:border-steampunk-gold/50 transition-all cursor-default">
+                                    <h5 class="text-steampunk-gold/60 text-[9px] uppercase font-serif tracking-widest mb-1">Rareza Prom.</h5>
+                                    <p class="text-steampunk-red font-bold text-[11px] tracking-widest mt-2 uppercase font-sans drop-shadow-[0_0_2px_#C0392B]">Épica</p>
+                                </div>
+                                <div class="bg-black/60 border border-steampunk-gold/20 p-3 text-center rounded-sm hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(201,168,76,0.3)] hover:border-steampunk-gold/50 transition-all cursor-default">
+                                    <h5 class="text-steampunk-gold/60 text-[9px] uppercase font-serif tracking-widest mb-1">Votos</h5>
+                                    <p class="text-steampunk-cream font-bold text-lg font-mono drop-shadow-[0_0_2px_#E8D5B5]">1,402</p>
+                                </div>
+                            </div>
+
+                            <!-- Bitácora -->
+                            <div class="w-full border border-steampunk-gold/30 bg-[#0a0604]/80 p-3 rounded-sm relative overflow-hidden mt-1 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]">
+                                <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-steampunk-gold to-transparent opacity-50"></div>
+                                <h5 class="text-steampunk-gold text-[9px] uppercase font-serif tracking-widest mb-2 flex items-center gap-1"><i data-lucide="terminal" class="w-3 h-3"></i> Bitácora de Sistema</h5>
+                                <div class="space-y-1.5 font-mono text-[10px] text-steampunk-cream/70 leading-tight">
+                                    <p><span class="text-steampunk-gold/80">[17:28]</span> Registro exitoso: Optimus Prime G1.</p>
+                                    <p><span class="text-steampunk-gold/80">[Ayer]</span> Recibiste +50 votos de la comunidad.</p>
+                                    <p><span class="text-steampunk-gold/80">[Hace 2 días]</span> Alcanzaste el rango Custodio de Bronce.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Settings Form -->
+                        <div class="flex-1 space-y-5 w-full md:pl-4">
+                            <div>
+                                <label class="block font-serif text-steampunk-gold text-sm uppercase tracking-widest mb-2">Nombre del Custodio</label>
+                                <input type="text" value="Lord Gearheart" id="input-name" class="w-full bg-black/50 border border-steampunk-gold/40 text-steampunk-cream px-4 py-3 rounded-none focus:outline-none focus:border-steampunk-gold focus:shadow-[0_0_10px_rgba(201,168,76,0.3)] transition-all font-sans" />
+                            </div>
+
+                            <div>
+                                <label class="block font-serif text-steampunk-gold text-sm uppercase tracking-widest mb-2">Biografía del Coleccionista</label>
+                                <textarea rows="3" id="input-bio" class="w-full bg-black/50 border border-steampunk-gold/40 text-steampunk-cream px-4 py-3 rounded-none focus:outline-none focus:border-steampunk-gold focus:shadow-[0_0_10px_rgba(201,168,76,0.3)] transition-all font-sans resize-none">Buscador incansable de reliquias olvidadas por el tiempo.</textarea>
+                            </div>
+
+                            <div>
+                                <label class="block font-serif text-steampunk-gold text-sm uppercase tracking-widest mb-2">Nicho Principal</label>
+                                <div class="relative">
+                                    <select id="input-niche" class="w-full bg-black/50 border border-steampunk-gold/40 text-steampunk-cream px-4 py-3 rounded-none focus:outline-none focus:border-steampunk-gold focus:shadow-[0_0_10px_rgba(201,168,76,0.3)] transition-all font-sans appearance-none cursor-pointer">
+                                        <option value="Star Wars" selected>Star Wars</option>
+                                        <option value="Gundam">Gundam</option>
+                                        <option value="Transformers">Transformers</option>
+                                        <option value="Reliquias Generales">Reliquias Generales</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-steampunk-gold">
+                                        ▼
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Campos Nuevos (Socials, Portada, Privacidad) -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 border-t border-steampunk-gold/20 pt-5 mt-2">
+                                <div>
+                                    <label class="block font-serif text-steampunk-gold text-sm uppercase tracking-widest mb-2 flex items-center gap-2"><i data-lucide="instagram" class="w-4 h-4 text-[#C9A84C]"></i> Frecuencia Social</label>
+                                    <input type="text" id="input-social" placeholder="@coleccionista_ig" value="@lord_gearheart" class="w-full bg-black/50 border border-steampunk-gold/40 text-steampunk-cream px-4 py-3 rounded-none focus:outline-none focus:border-steampunk-gold focus:shadow-[0_0_10px_rgba(201,168,76,0.3)] transition-all font-sans text-sm" />
+                                </div>
+                                
+                                <div>
+                                    <label class="block font-serif text-steampunk-gold text-sm uppercase tracking-widest mb-2 flex items-center gap-2"><i data-lucide="image" class="w-4 h-4"></i> Artefacto Portada</label>
+                                    <div class="relative">
+                                        <select id="input-favorite" class="w-full bg-black/50 border border-steampunk-gold/40 text-steampunk-cream px-4 py-3 rounded-none focus:outline-none focus:border-steampunk-gold focus:shadow-[0_0_10px_rgba(201,168,76,0.3)] transition-all font-sans appearance-none cursor-pointer text-sm">
+                                            <!-- Dynamically injected options -->
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-steampunk-gold">
+                                            ▼
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between bg-black/30 border border-steampunk-gold/20 p-4 mt-2">
+                                <div>
+                                    <div class="font-serif text-steampunk-gold text-sm uppercase tracking-widest mb-1 flex items-center gap-2"><i data-lucide="eye" class="w-4 h-4"></i> Válvula de Privacidad</div>
+                                    <div class="text-[11px] text-steampunk-cream/50 pr-4">Si cierras la válvula, nadie podrá ver tus tesoros en el Nexo público.</div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer group shrink-0">
+                                  <input type="checkbox" id="input-privacy" class="sr-only peer" checked>
+                                  <div class="w-14 h-7 bg-black border-2 border-steampunk-gold/40 peer-focus:outline-none rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-steampunk-red after:border-steampunk-gold after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-steampunk-red/20 peer-checked:after:bg-steampunk-gold peer-checked:border-steampunk-gold shadow-[inset_0_0_5px_rgba(0,0,0,0.8)] group-hover:shadow-[0_0_10px_rgba(201,168,76,0.3)]"></div>
+                                </label>
+                            </div>
+
+                            <div class="pt-2 flex justify-end">
+                                <button id="btn-save" onclick="saveProfile()" class="relative overflow-hidden bg-gradient-to-b from-steampunk-gold to-[#8c7330] text-steampunk-dark font-serif uppercase tracking-widest font-bold px-10 py-4 rounded-sm shadow-[0_0_20px_rgba(201,168,76,0.6)] active:scale-95 transition-all hover:shadow-[0_0_30px_rgba(201,168,76,1)] hover:brightness-125 group animate-[pulse_2s_ease-in-out_infinite]">
+                                    <span id="btn-save-content" class="relative z-10 flex items-center gap-2"><i data-lucide="save" class="w-5 h-5"></i> Guardar</span>
+                                    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VAULT TAB -->
+            <div id="view-vault" class="transition-all duration-500 transform opacity-0 translate-y-8 absolute hidden pointer-events-none w-full max-w-4xl pr-16 md:pr-0">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+                    <div>
+                        <h1 class="font-serif text-3xl md:text-5xl text-steampunk-gold mb-2 uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">La Bóveda</h1>
+                        <p class="text-steampunk-cream/60 font-light tracking-wide">Tu inventario de artefactos protegidos.</p>
+                    </div>
+                    <div id="vault-counter" class="text-steampunk-gold font-serif text-xl border border-steampunk-gold/30 px-4 py-2 bg-black/40 whitespace-nowrap">
+                        4 Ítems
+                    </div>
+                </div>
+
+                <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full relative z-10">
+                    <!-- Items rendered via JS -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // State Simulation
+        let itemsData = [
+            { id: 1, name: "Optimus Prime G1", year: "1984", image: "https://api.dicebear.com/7.x/shapes/svg?seed=1&backgroundColor=C0392B" },
+            { id: 2, name: "Sailor Moon S.H.Figuarts", year: "2013", image: "https://api.dicebear.com/7.x/shapes/svg?seed=2&backgroundColor=C9A84C" },
+            { id: 3, name: "Nintendo Entertainment System", year: "1985", image: "https://api.dicebear.com/7.x/shapes/svg?seed=3&backgroundColor=1A0F0A" },
+            { id: 4, name: "Millennium Falcon Kenner", year: "1979", image: "https://api.dicebear.com/7.x/shapes/svg?seed=4&backgroundColor=E8D5B5" }
+        ];
+
+        // Tab System
+        function initProfileData() {
+            // Stats Grid Update
+            document.getElementById('stat-relics').innerText = itemsData.length;
+            
+            // Selector Portada Update
+            const favSelect = document.getElementById('input-favorite');
+            favSelect.innerHTML = '<option value="">Ninguna seleccionada</option>';
+            itemsData.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.id;
+                opt.innerText = item.name;
+                favSelect.appendChild(opt);
+            });
+            lucide.createIcons();
+        }
+
+        function switchTab(tab) {
+            const btnProfile = document.getElementById('btn-tab-profile');
+            const indProfile = document.getElementById('ind-profile');
+            const iconProfile = document.getElementById('icon-profile');
+            const viewProfile = document.getElementById('view-profile');
+
+            const btnVault = document.getElementById('btn-tab-vault');
+            const indVault = document.getElementById('ind-vault');
+            const iconVault = document.getElementById('icon-vault');
+            const viewVault = document.getElementById('view-vault');
+
+            if (tab === 'profile') {
+                // Button Visuals
+                btnProfile.className = btnProfile.className.replace('text-steampunk-cream/60 hover:text-steampunk-gold hover:bg-white/5', 'text-steampunk-gold bg-steampunk-gold/10');
+                indProfile.classList.replace('opacity-0', 'opacity-100');
+                iconProfile.classList.replace('group-hover:scale-110', 'drop-shadow-[0_0_8px_#C9A84C]');
+                
+                btnVault.className = btnVault.className.replace('text-steampunk-gold bg-steampunk-gold/10', 'text-steampunk-cream/60 hover:text-steampunk-gold hover:bg-white/5');
+                indVault.classList.replace('opacity-100', 'opacity-0');
+                iconVault.classList.replace('drop-shadow-[0_0_8px_#C9A84C]', 'group-hover:scale-110');
+
+                // View Transitions
+                viewVault.classList.replace('opacity-100', 'opacity-0');
+                viewVault.classList.replace('translate-y-0', 'translate-y-8');
+                viewVault.classList.add('pointer-events-none');
+                
+                setTimeout(() => {
+                    viewVault.classList.add('hidden');
+                    viewVault.classList.remove('relative');
+                    viewVault.classList.add('absolute');
+                    
+                    viewProfile.classList.remove('hidden');
+                    viewProfile.classList.remove('absolute');
+                    viewProfile.classList.add('relative');
+                    
+                    // Inicializar info nativa del perfil
+                    initProfileData();
+                    
+                    // Force reflow
+                    void viewProfile.offsetWidth;
+
+                    viewProfile.classList.replace('opacity-0', 'opacity-100');
+                    viewProfile.classList.replace('translate-y-8', 'translate-y-0');
+                    viewProfile.classList.remove('pointer-events-none');
+                }, 500);
+
+            } else {
+                // Button Visuals
+                btnVault.className = btnVault.className.replace('text-steampunk-cream/60 hover:text-steampunk-gold hover:bg-white/5', 'text-steampunk-gold bg-steampunk-gold/10');
+                indVault.classList.replace('opacity-0', 'opacity-100');
+                iconVault.classList.replace('group-hover:scale-110', 'drop-shadow-[0_0_8px_#C9A84C]');
+                
+                btnProfile.className = btnProfile.className.replace('text-steampunk-gold bg-steampunk-gold/10', 'text-steampunk-cream/60 hover:text-steampunk-gold hover:bg-white/5');
+                indProfile.classList.replace('opacity-100', 'opacity-0');
+                iconProfile.classList.replace('drop-shadow-[0_0_8px_#C9A84C]', 'group-hover:scale-110');
+
+                // View Transitions
+                viewProfile.classList.replace('opacity-100', 'opacity-0');
+                viewProfile.classList.replace('translate-y-0', 'translate-y-8');
+                viewProfile.classList.add('pointer-events-none');
+                
+                setTimeout(() => {
+                    viewProfile.classList.add('hidden');
+                    viewProfile.classList.remove('relative');
+                    viewProfile.classList.add('absolute');
+                    
+                    viewVault.classList.remove('hidden');
+                    viewVault.classList.remove('absolute');
+                    viewVault.classList.add('relative');
+                    
+                    renderVault();
+                    
+                    void viewVault.offsetWidth;
+
+                    viewVault.classList.replace('opacity-0', 'opacity-100');
+                    viewVault.classList.replace('translate-y-8', 'translate-y-0');
+                    viewVault.classList.remove('pointer-events-none');
+                }, 500);
+            }
+        }
+
+        // Vault Rendering
+        function renderVault() {
+            const grid = document.getElementById('vault-grid');
+            document.getElementById('vault-counter').innerText = `${itemsData.length} Ítems`;
+            grid.innerHTML = '';
+
+            itemsData.forEach((item) => {
+                const card = document.createElement('div');
+                card.id = `item-${item.id}`;
+                card.className = "bg-black/60 border border-steampunk-gold/30 p-4 rounded-sm flex items-center gap-4 group transition-all duration-500 hover:border-steampunk-gold/80 hover:bg-steampunk-gold/5 hover:shadow-[0_0_20px_rgba(201,168,76,0.15)] transform scale-100 opacity-100";
+                
+                card.innerHTML = `
+                    <div class="w-16 h-16 shrink-0 rounded-sm border 2 border-steampunk-gold/50 overflow-hidden bg-white/5">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-serif text-steampunk-gold text-sm md:text-base truncate tracking-wide">${item.name}</h3>
+                        <p class="text-steampunk-cream/50 text-xs font-mono mt-1">Acqu: ${item.year}</p>
+                    </div>
+                    <button onclick="deleteItem(${item.id})" class="p-2 border border-steampunk-red/30 text-steampunk-red/70 hover:bg-steampunk-red hover:text-white transition-colors shrink-0 rounded-sm group-hover:border-steampunk-red" title="Expulsar">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // Visual Deletion
+        function deleteItem(id) {
+            const card = document.getElementById(`item-${id}`);
+            // Force animation classes
+            card.style.transition = 'all 400ms ease-out';
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            card.style.height = '0px';
+            card.style.padding = '0px';
+            card.style.margin = '0px';
+            card.style.borderWidth = '0px';
+            
+            // Remove from array and DOM after animation completes
+            setTimeout(() => {
+                itemsData = itemsData.filter(i => i.id !== id);
+                renderVault();
+                initProfileData(); // Update stats too
+            }, 400);
+        }
+
+        function simulateFileClick() {
+            document.getElementById('avatar-input').click();
+        }
+
+        function changeAvatar() {
+            const input = document.getElementById('avatar-input');
+            if (input.files && input.files[0]) {
+                document.getElementById('profile-avatar').src = "https://api.dicebear.com/7.x/bottts/svg?seed=newavatar&backgroundColor=C9A84C";
+            }
+        }
+
+        function saveProfile() {
+            const btn = document.getElementById('btn-save-content');
+            const masterBtn = document.getElementById('btn-save');
+            const originalHTML = btn.innerHTML;
+            
+            // Simular carga con efecto spinner
+            btn.innerHTML = '<i data-lucide="settings" class="w-5 h-5 animate-spin"></i> Procesando...';
+            lucide.createIcons();
+            
+            // Detener el pulse y oscurecer
+            masterBtn.classList.remove('animate-[pulse_2s_ease-in-out_infinite]');
+            masterBtn.style.opacity = '0.8';
+            
+            setTimeout(() => {
+                // Restaurar botón
+                btn.innerHTML = originalHTML;
+                masterBtn.classList.add('animate-[pulse_2s_ease-in-out_infinite]');
+                masterBtn.style.opacity = '1';
+                lucide.createIcons();
+                
+                // Mostrar Toast
+                const toast = document.getElementById('toast');
+                document.getElementById('toast-msg').innerText = "¡Registro sellado con éxito, Custodio!";
+                toast.classList.replace('translate-x-full', 'translate-x-0');
+                toast.classList.replace('opacity-0', 'opacity-100');
+                
+                setTimeout(() => {
+                    toast.classList.replace('translate-x-0', 'translate-x-full');
+                    toast.classList.replace('opacity-100', 'opacity-0');
+                }, 3000);
+            }, 1500);
+        }
+
+        // Ejecutar funciones gráficas y estados al cargar
+        setTimeout(initProfileData, 50);
+
+    </script>
+</body>
+</html>

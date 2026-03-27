@@ -14,7 +14,7 @@
         :root { --bg-base: #1a100b; --bg-gradient: radial-gradient(circle at top, #2b1b13 0%, #0f0906 100%); --bronce-gold: #d59c3e; --crimson-rust: #852b10; --text-light: #e0e0e0; }
         body { background: var(--bg-gradient); background-color: var(--bg-base); background-attachment: fixed; color: var(--text-light); font-family: 'Inter', sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
         h1, h2, h3, .brand-font { font-family: 'Cinzel', serif; color: var(--bronce-gold); text-shadow: 0 2px 4px rgba(0,0,0,1); }
-        .navbar { background-color: rgba(43, 27, 19, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 2px solid var(--bronce-gold); padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 30px rgba(0,0,0,0.8); position: sticky; top: 0; z-index: 100; }
+        .navbar { background-color: rgba(43, 27, 19, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 2px solid var(--bronce-gold); padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 30px rgba(0,0,0,0.8); position: sticky; top: 0; width: 100%; box-sizing: border-box; z-index: 1000; }
         .navbar-brand { display: flex; align-items: center; gap: 20px; text-decoration: none; }
         .navbar-brand img { height: 55px; filter: drop-shadow(0 0 8px rgba(213, 156, 62, 0.3)); transition: transform 0.3s ease; }
         .navbar-brand:hover img { transform: scale(1.05); }

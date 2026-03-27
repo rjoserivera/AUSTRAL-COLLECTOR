@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #d4af37; /* Gold/Bronze */
+  --color-brand-secondary: #0a0a0a; /* Deep dark background */
+  --color-brand-accent: #00d2ff; /* Magic Cyan Glow */
+  --color-brand-muted: #2d2d2d; /* Muted metal/bg */
+  --color-brand-text: #e0e0e0;
+
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+  --font-family-display: 'Cinzel', serif; /* A bit of retro/classic for titles */
+
+  /* Alienación de compatibilidad con las clases existentes en admin.html para mantener tu diseño vivo */
+  --color-steampunk-dark: #0a0a0a;
+  --color-steampunk-gold: #d4af37;
+  --color-steampunk-red: #00d2ff;
+  --color-steampunk-cream: #e0e0e0;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-secondary);
+    color: var(--color-brand-text);
+    font-family: var(--font-family-sans);
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-display);
+  }
+}
+
+/* Custom Utilities for Steampunk / Dark Fantasy aesthetic */
+@layer utilities {
+  .bg-glass {
+    background: rgba(45, 45, 45, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+  }
+
+  .border-bronze {
+    border-color: var(--color-brand-primary);
+  }
+}
