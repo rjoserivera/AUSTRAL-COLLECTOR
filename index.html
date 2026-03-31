@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Austral Collector - Inicio</title>
+    <title>Aura Collector - Inicio</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- Cropper.js CDN (Para Recortar Fotos Localmente) -->
@@ -94,8 +94,8 @@
 <body>
     <nav class="navbar">
         <a href="index.html" class="navbar-brand">
-            <img src="src/assets/img/logo.png" alt="Logo Austral">
-            <span class="brand-font">AUSTRAL COLLECTOR</span>
+            <img src="src/assets/img/logo.png" alt="Logo Aura">
+            <span class="brand-font">AURA COLLECTOR</span>
         </a>
         <div class="nav-links">
             <a href="index.html">Inicio</a>
@@ -399,7 +399,7 @@
     <!-- Footer de Contacto -->
     <footer id="contacto" class="footer-area">
         <h3 class="brand-font">Contacto y Soporte</h3>
-        <p>Email: gremio@australcollector.cl <br> Teléfono: +56 9 1234 5678</p>
+        <p>Email: gremio@auracollector.cl <br> Teléfono: +56 9 1234 5678</p>
         <div class="footer-links">
             <a href="#soporte" onclick="alert('Soporte en construcción')">Soporte</a>
             <a href="#terminos">Términos y Condiciones</a>
@@ -413,7 +413,7 @@
             const loadSavedPosts = () => {
                 const grid = document.querySelector('.cards-grid');
                 if(!grid) return;
-                const savedStr = localStorage.getItem('austral_posts');
+                const savedStr = localStorage.getItem('aura_posts');
                 if(savedStr) {
                     const savedPosts = JSON.parse(savedStr);
                     savedPosts.forEach(post => {
@@ -773,12 +773,12 @@
                         };
 
                         let savedPosts = [];
-                        const savedStr = localStorage.getItem('austral_posts');
+                        const savedStr = localStorage.getItem('aura_posts');
                         if (savedStr) savedPosts = JSON.parse(savedStr);
                         savedPosts.push(postObj);
 
                         try {
-                            localStorage.setItem('austral_posts', JSON.stringify(savedPosts));
+                            localStorage.setItem('aura_posts', JSON.stringify(savedPosts));
                         } catch (err) {
                             console.error(err);
                             alert("Grimorio Lleno: El cristal de memoria local superó su cuota (aprox 5MB). La publicación aparecerá, pero no se guardará tras recargar la página.");
